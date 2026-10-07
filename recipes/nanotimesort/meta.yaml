@@ -1,0 +1,47 @@
+{% set name = "nanotimesort" %}
+{% set version = "1.0.0" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/n/nanotimesort/nanotimesort-{{ version }}.tar.gz
+  sha256: 2564f9e2364ffd8da28513d4b58479ca70e38b55c738450b5acccf759706851b
+
+build:
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 0
+  entry_points:
+    - nanotimesort = nanotimesort.cli:main
+  run_exports:
+    - {{ pin_subpackage("nanotimesort", max_pin="x") }}
+
+requirements:
+  host:
+    - python >=3.8
+    - setuptools
+    - pip
+  run:
+    - python >=3.8
+
+test:
+  imports:
+    - nanotimesort
+  commands:
+    - nanotimesort --version
+    - nanotimesort --help
+
+about:
+  home: https://github.com/duceppemo/nanoTimeSort
+  summary: Bin Oxford Nanopore reads by cumulative sequencing time intervals (Guppy and Dorado compatible)
+  doc_url: https://github.com/duceppemo/nanoTimeSort/wiki
+  dev_url: https://github.com/duceppemo/nanoTimeSort
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+
+extra:
+  recipe-maintainers:
+    - duceppemo
